@@ -24,13 +24,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      # https://github.com/ARM-software/cmsis-actions
       - name: Activate vcpkg
         uses: ARM-software/cmsis-actions/vcpkg@v1
         with: 
           config: "./vcpkg-configuration.json"
 
-      # https://github.com/ARM-software/cmsis-actions
       - name: Activate Arm tool license
         uses: ARM-software/cmsis-actions/armlm@v1
 
@@ -55,19 +53,19 @@ jobs:
       # Execute the demo
       - name: Execute AWS_MQTT demo
         run: |
-         FVP_Corstone_SSE-300 \
-         -a ./out/Demo/Simulator/Debug/Demo.axf \
-         -f ./Board/AVH_MPS3_Corstone-300/fvp_config.txt \
-         --simlimit 120 --stat -Q 10 > ./out/Demo/AWS_MQTT_Demo.log
-         cat ./out/Demo/AWS_MQTT_Demo.log
+          FVP_Corstone_SSE-300 \
+          -a ./out/Demo/Simulator/Debug/Demo.axf \
+          -f ./Board/AVH_MPS3_Corstone-300/fvp_config.txt \
+          --simlimit 120 --stat -Q 10 > ./out/Demo/AWS_MQTT_Demo.log
+          cat ./out/Demo/AWS_MQTT_Demo.log
 
       # Analyze results
       - name: Analyze results
         run: |
-         echo "Checking if a MQTT packet has been received"
-         if [ "$(grep -c "Incoming Publish Message : Hello World!" ./out/Demo/AWS_MQTT_Demo.log)" -eq 0 ]
-         then 
-                 exit 1
-         else 
-                 exit 0
-         fi
+          echo "Checking if a MQTT packet has been received"
+          if [ "$(grep -c "Incoming Publish Message : Hello World!" ./out/Demo/AWS_MQTT_Demo.log)" -eq 0 ]
+          then 
+            exit 1
+          else 
+            exit 0
+          fi

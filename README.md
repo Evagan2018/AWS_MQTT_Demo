@@ -41,9 +41,17 @@ To run the demo application [*configure the AWS IoT Thing*](https://docs.aws.ama
   - `democonfigCLIENT_CERTIFICATE_PEM`: Client Certificate
   - `democonfigCLIENT_PRIVATE_KEY_PEM`: Client Private Key
 
+Rather than modifying the definitions manually, you can provide AWS IoT Thing information through [environment variables](.doc/EnvVars.md) and run the script [configure-aws-iot-thing.js](scripts/configure-aws-iot-thing.js). The script updates the relevant defines in the [demo_config.h](FreeRTOS-Plus/Demo/Config/demo_config.h) based on those environment variables. This approach keeps configuration consistent across local development, CI runs on GitHub runners, and cloud environments such as GitHub Codespaces. Ensure that the relevant [environment variables](.doc/EnvVars.md) are correctly set and execute the script with:
+
+```bash
+node ./scripts/configure-aws-iot-thing.js ./FreeRTOS-Plus/Demo/Config/demo_config.h
+```
+
+or run the task `Configure AWS IoT Thing` when using VS Code.
+
 ## Run on AVH-FVP Simulation Model
 
-Once the *AWS IoT Thing* is configured it can be build and run on AVH-FVP simulation models.
+Once the *AWS IoT Thing* is configured it can be built and run on AVH-FVP simulation models.
 
 ```bash
 cbuild Demo.csolution.yml --context .Debug+Simulator --packs
@@ -97,8 +105,15 @@ Incoming Publish Message : Hello World!
 
 The MQTT messages can be viewed in the [**AWS IoT console**](https://docs.aws.amazon.com/iot/latest/developerguide/view-mqtt-messages.html).
 
-## [Continuous Integration (CI)](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.doc/README.md)
-The [README.md](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.doc/README.md) in the [`.doc`](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.doc) folder describes the [GitHub Actions](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.github/workflows) for build and execution tests. It executes similar steps on a GitHub Runner.
+## Development environments
+
+- Command line tools
+- [Keil Studio for VS Code](https://www.keil.arm.com/) on a local machine
+- [Keil Studio for VS Code](https://www.keil.arm.com/) in GitHub Codespaces
+
+## Continuous Integration (CI)
+
+The GitHub Actions in the directory [`.github/workflows`](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.github/workflows) are the scripts for the CI tests. These scripts contain detailed comments about each step that is executed. Ensure that [environment variables](.doc/EnvVars.md) for the AWS IoT Thing are correctly set via [GitHub Secrets](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions).
 
 ## Configure for Evaluation Boards
 
